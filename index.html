@@ -3,44 +3,102 @@
     <head>
         <meta charset="utf-8">
         <title>Vue stuff</title>
+        <link rel="stylesheet" href="styles/products.css">
     </head>
     <body>
-        <div id="app">
-            <ul>
-                <li v-for="poke in pokemon">
-                    {{ poke.name }}
-                </li>
-            </ul>
+        <div class="nav-bar">
 
-            <h2>About Bulbasaur</h2>
-            <ul>
-                <li v-for="type in bulbasaur">
-                    {{ type.type.name }}
-                </li>
-            </ul>
+        </div>
+        <div id="app">
+            <div class="product">
+
+                <div class="product-image">
+                    <span class="sale" v-if="onSale">On sale</span>
+                    <img v-bind:src="image" :alt="product">
+                </div>
+
+                <div class="product-info">
+                    <h1>{{ product }}</h1>
+                    <p :class="{ striked: !inventory }">In stock</p>
+                    <p v-if="inventory <= 10 && inventory > 0">Almost sold out</p>
+                    <p v-else>Out of stock</p>
+                    <ul>
+                        <li v-for="detail in details">{{ detail }}</li>
+                    </ul>
+                    <div
+                        v-for="variant in variants"
+                        :key="variant.variantId"
+                        class="color-box"
+                        :style="{ backgroundColor: variant.variantColor }"
+                        @mouseover="updateProduct(variant.variantImage)">
+                    </div>
+                    <ul>
+                        <li v-for="size in sizes">{{ size }}</li>
+                    </ul>
+
+                    <button v-on:click="addToCart" :disabled="!inventory">Add to cart</button>
+
+                    <button @click="removeFromCart" :disabled="!cart">Remove from cart</button>
+
+                    <div class="cart">
+                        <p>Cart({{ cart }})</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="notes">
+            <p>v-if will render or not render the element. It can be more efficient to use v-show which will still render but display: none the element</p>
+            <p>Other events we can listen for: @click, @submit, @mouseover, @keyup.enter (when enter key is pressed)</p>
+
         </div>
 
         <!-- development version, includes helpful console warnings -->
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
         <script>
-            const app = new Vue({
+            var app = new Vue({
                 el: '#app',
                 data: {
-                    pokemon: [],
-                    bulbasaur: []
+                    product: 'Yoshis',
+                    image: './images/yoshi-green.jpg',
+                    inventory: 1,
+                    onSale: false,
+                    details: ['Fluffy', 'Cute', 'From the Super Mario series'],
+                    variants: [
+                        {
+                            variantId: 2234,
+                            variantColor: 'green',
+                            variantImage: './images/yoshi-green.jpg'
+                        },
+                        {
+                            variantId: 2235,
+                            variantColor: 'blue',
+                            variantImage: './images/yoshi-blue.jpg'
+                        }
+                    ],
+                    sizes: ['Small', 'Medium', 'Large'],
+                    cart: 0
                 },
-                created () {
-                    fetch('https://pokeapi.co/api/v2/pokemon/')
-                    .then(response => response.json())
-                    .then(json => {
-                        this.pokemon = json.results
-                    })
-                    fetch('https://pokeapi.co/api/v2/pokemon/1/')
-                    .then(response => response.json())
-                    .then(json => {
-                        this.bulbasaur = json.types
-                    })
-                }
+                methods: {
+                    addToCart: function () {
+                        this.cart += 1
+                    },
+                    removeFromCart() {
+                        this.cart -= 1
+                    },
+                    // can use es6 shorthand for the function
+                    updateProduct(variantImage) {
+                        this.image = variantImage
+                    }
+                },
+                // seems simpler way to just do "disabled: !cart"
+                // computed: {
+                //     cartDisabled() {
+                //         return this.cart <= 0
+                //     }
+                // }
             });
         </script>
     </body>
