@@ -3,7 +3,7 @@
     <svg class="icon icon-clock">
         <use xlink:href="#icon-clock"></use>
     </svg>
-    <TimeChecker msg="Where are you?"/>
+    <TimeChecker title="Where are you?"/>
   </div>
 </template>
 
