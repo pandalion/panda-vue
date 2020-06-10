@@ -11,6 +11,7 @@ npm install
 ```
 npm run serve
 ```
+View the site at `http://localhost:8080/`
 
 ### Compiles and minifies for production
 ```
