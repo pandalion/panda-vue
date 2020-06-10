@@ -1,7 +1,14 @@
 <template>
   <div>
     <h1>{{ title }}</h1>
-    {{ info }}
+    <h2>Please choose a country</h2>
+    <!-- to-do: add loading spinner to show locations are loading -->
+    <select>
+        <option v-for="zone in timezones" :value="zone.value" :key="zone.id">
+            {{ zone }}
+        </option>
+    </select>
+    <p>Selected: Show selected timezone here</p>
   </div>
 </template>
 
@@ -13,11 +20,13 @@ export default {
   },
   data () {
     return {
-      info: null
+      timezones: null
     }
   },
   mounted () {
-    this.axios.get('http://worldtimeapi.org/api/').then(response => (this.info = response));
+    // get the relevant bits we need from the API
+    this.axios.get('http://worldtimeapi.org/api/timezone/').then(response => (this.timezones = response.data))
+    .catch(error => console.log(error));
   }
 }
 </script>
