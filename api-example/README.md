@@ -1,5 +1,7 @@
 # api-example
 
+This example [VueJS](https://vuejs.org/) project uses the [WorldTimeAPI](http://worldtimeapi.org/)
+
 ## Project setup
 ```
 npm install
