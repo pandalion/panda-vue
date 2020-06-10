@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 import Home from '../views/Home.vue'
+
+Vue.use(VueAxios, axios)
 
 Vue.use(VueRouter)
 
